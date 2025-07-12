@@ -31,6 +31,9 @@ jobs:
   build-push-pr:
     if: github.event_name == 'pull_request'
 
+    permissions:
+      pull-requests: write
+
     strategy:
       matrix:
         version:
