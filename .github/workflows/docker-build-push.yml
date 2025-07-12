@@ -1,0 +1,40 @@
+name: Build and Push Using Shared Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-push:
+    if: github.event_name != 'pull_request'
+
+    strategy:
+      matrix:
+        version:
+          - 'latest'
+
+    uses: nstwf-docker/docker-ci/.github/workflows/docker-build-push.yaml@1
+    secrets: inherit
+    with:
+      image_version: ${{ matrix.version }}
+      dockerhub_image: nstwf/${{ github.event.repository.name }}
+      ghcr_image: ghcr.io/${{ github.repository }}
+
+  build-push-pr:
+    if: github.event_name == 'pull_request'
+
+    strategy:
+      matrix:
+        version:
+          - 'test'
+
+    uses: nstwf-docker/docker-ci/.github/workflows/docker-build-push-pr.yaml@main
+    secrets: inherit
+    with:
+      image_version: ${{ matrix.version }}
+      dockerhub_image: nstwf/${{ github.event.repository.name }}
