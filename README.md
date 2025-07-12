@@ -78,13 +78,13 @@ Run the registry cleaner using the official Docker image inside your workflows w
 
 ### Usage in Workflow
 
-  ```yaml
+```yaml
 jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
       - name: Run Registry Cleaner
-        uses: nstwf/nstwf-docker-registry-cleaner@v1
+        uses: nstwfdev/docker-registry-image-cleaner@v1
         with:
           dockerhub_repo: "username/repo"
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
