@@ -1,0 +1,37 @@
+name: 'Docker Registry Image Cleaner'
+description: 'Cleanup Docker Hub and GHCR images by prefix and age'
+author: 'Timur'
+inputs:
+  dockerhub_repo:
+    description: 'Docker Hub repository (e.g. username/repo)'
+    required: false
+  dockerhub_username:
+    description: 'Docker Hub username'
+    required: false
+  dockerhub_password:
+    description: 'Docker Hub password'
+    required: false
+  ghcr_repo:
+    description: 'GitHub Container Registry repository (e.g. ghcr.io/org/repo)'
+    required: false
+  ghcr_token:
+    description: 'GitHub token with delete:packages permission'
+    required: false
+  image_prefix:
+    description: 'Only delete tags starting with this prefix'
+    required: false
+  max_age_days:
+    description: 'Only delete tags older than this number of days'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    DOCKERHUB_REPO: ${{ inputs.dockerhub_repo }}
+    DOCKERHUB_USERNAME: ${{ inputs.dockerhub_username }}
+    DOCKERHUB_PASSWORD: ${{ inputs.dockerhub_password }}
+    GHCR_REPO: ${{ inputs.ghcr_repo }}
+    GHCR_TOKEN: ${{ inputs.ghcr_token }}
+    IMAGE_PREFIX: ${{ inputs.image_prefix }}
+    MAX_AGE_DAYS: ${{ inputs.max_age_days }}
+  entrypoint: "/usr/local/bin/clean.sh"
